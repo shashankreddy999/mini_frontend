@@ -1,0 +1,27 @@
+@import "./globals.scss";
+
+.uploadSide {
+  flex: 0.4;
+  height: calc(100vh - 100px);
+  margin: 15px;
+  border-radius: 20px;
+  flex-direction: column;
+  h1 {
+    font-size: 50px;
+    margin-top: 40px;
+    flex: 0.6;
+  }
+  div {
+    h3 {
+      flex: 0.6;
+      font-size: 25px;
+      margin-top: 15px;
+      color: rgba(0, 0, 0, 0.7);
+    }
+  }
+  img {
+    width: 400px;
+    float: right;
+    margin-top: 90px;
+  }
+}
