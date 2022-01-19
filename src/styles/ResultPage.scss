@@ -1,0 +1,40 @@
+@import "./globals.scss";
+.ResultPage {
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  .results {
+    flex: 0.6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+    background-color: $nyanza;
+    border-radius: 20px;
+    padding: 30px;
+
+    .Result {
+      margin-top: 200px;
+      font-size: 40px;
+    }
+    .prob {
+      margin-top: 20px;
+    }
+    p {
+      font-size: 25px;
+    }
+  }
+  .graph {
+    flex: 0.4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+    background-color: $nyanza;
+    border-radius: 20px;
+    padding: 30px;
+    img {
+      padding: 20px;
+    }
+  }
+}

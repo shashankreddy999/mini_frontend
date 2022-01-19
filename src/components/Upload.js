@@ -1,15 +1,12 @@
 import React from "react";
 import { useDropzone } from "react-dropzone";
 import { useState } from "react";
-import button from "reactive-button";
 import "../styles/Upload.scss";
 import axios from "axios";
 
-function Upload() {
+function Upload(props) {
   const [files, setFiles] = useState([]);
-  const [file, setFile] = useState("");
   const [data, setdata] = useState(null);
-  const [progress, setProgess] = useState(0);
   const { getRootProps, getInputProps } = useDropzone({
     accept: "image/*",
     multiple: false,
@@ -18,74 +15,51 @@ function Upload() {
         acceptedFiles.map((file) =>
           Object.assign(file, {
             preview: URL.createObjectURL(file),
+            picture: file,
           })
         )
       );
-
       setdata(acceptedFiles[0]);
+      console.log(acceptedFiles[0]);
+      // setFiles({
+      //   preview: URL.createObjectURL(acceptedFiles[0]),
+      //   /* this contains the file we want to send */
+      //   pictureAsFile: acceptedFiles[0],
+      // });
+      // console.log(acceptedFiles[0]);
     },
   });
 
-  const upload = () => {
-    // if (files.length) {
-    //   axios
-    //     .post(
-    //       "https://25d174a9-2b6c-44d4-97a6-fd427b1f3352.mock.pstmn.io/tumor",
-    //       {
-    //         data: data,
-    //         hello: "hello",
-    //       }
-    //     )
-    //     .then((res) => {
-    //       console.log(res);
-    //     });
-    // } else {
-    //   alert("Upload image");
-    // }
-    // console.log(data);
-    var xhr = new XMLHttpRequest();
-    xhr.open(
-      "post",
-      "https://25d174a9-2b6c-44d4-97a6-fd427b1f3352.mock.pstmn.io/tumor",
-      true
-    );
-    xhr.send(data);
-  };
-
-  const handleChange = (e) => {
-    e.preventDefault();
-    setProgess(0);
-    const file = e.target.files[0]; // accesing file
-    console.log(file);
-    setFile(file); // storing file
-  };
-
   const uploadFile = () => {
     const formData = new FormData();
-    formData.append("file", file); // appending file
+    formData.append("files", files);
+    formData.append("data", data);
+    console.log(formData); // appending file
+    for (var key of formData.entries()) {
+      console.log(key[0] + ", " + key[1]);
+    }
+
+    // let request = new XMLHttpRequest();
+    // request.open("POST", "http://127.0.0.1:5000/hello");
+    // request.send(formData);
     axios
-      .post(
-        "https://25d174a9-2b6c-44d4-97a6-fd427b1f3352.mock.pstmn.io/tumor",
-        formData,
-        {
-          onUploadProgress: (ProgressEvent) => {
-            let progress =
-              Math.round((ProgressEvent.loaded / ProgressEvent.total) * 100) +
-              "%";
-            setProgess(progress);
-          },
-        }
-      )
+      .post("" + process.env.REACT_APP_API_ENDPOINT, formData)
       .then((res) => {
-        console.log(res);
-        setdata({
-          name: res.data.name,
-          path:
-            "https://25d174a9-2b6c-44d4-97a6-fd427b1f3352.mock.pstmn.io" +
-            res.data.path,
-        });
+        console.log(res.data["prob"]);
+        props.setprob(res.data["prob"]);
       })
       .catch((err) => console.log(err));
+    // const Upload = async () => {
+    //   await fetch("http://127.0.0.1:5000/hello", {
+    //     method: "POST",
+    //     body: formData,
+    //   })
+    //     .then((res) => {
+    //       console.log(res.json()["prob"]);
+    //     })
+    //     .catch((err) => console.log(err));
+    // };
+    // Upload();
   };
 
   return (
@@ -106,6 +80,7 @@ function Upload() {
           ) : null}
         </div>
       </div>
+
       <div className="buttonClass">
         <button
           className="deletebutton button"
